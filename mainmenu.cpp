@@ -127,3 +127,4 @@ int main(){
 	system("cls");
 	return 0;
 }
+//daami xa rishi.
