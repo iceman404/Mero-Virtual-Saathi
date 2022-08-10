@@ -1,0 +1,567 @@
+#include<iostream>
+#include<windows.h>
+#include<fstream>
+#include<cstdlib>
+#include<time.h>
+#include<string.h>
+#include<string>
+#include<algorithm>
+#include<array>
+
+using namespace std;
+
+/* run this program using the console pauser or add your own getch, system("pause") or input loop */
+
+
+typedef struct speech_value{
+	int number_mark;
+	char user_speech_copy[100];
+}Speech;
+	
+typedef struct Word_Analyzer{
+	int Greeting;
+	int Question;
+	int Task;
+	int Statement;
+}Word_value;
+
+char user_voice[100];	
+	
+class Boundary_Frame{
+	public:
+		void coord_xy(short x, short y){
+ 			COORD pos ={x,y};
+ 			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+		}
+		void full_outer_frame(){
+			coord_xy(2,0);
+			for(int i=0;i<150;i++){
+				cout<<(char)220;
+			}
+			coord_xy(2,1);cout<<(char)219;
+			for(int j=2;j<34;j++){
+				coord_xy(2,j);
+				cout<<(char)219;
+			}
+			coord_xy(151,1);cout<<(char)219;
+			for(int j=2;j<34;j++){
+				coord_xy(151,j);
+				cout<<(char)219;
+			}
+			coord_xy(2,34);
+			for(int i=0;i<150;i++){
+				cout<<(char)223;
+			}
+		}
+		void full_inner_frame(){
+			coord_xy(3,1);
+			for(int i=0;i<147;i++){
+				cout<<(char)178;
+			}
+			coord_xy(3,1);cout<<(char)178;
+			for(int j=1;j<33;j++){
+				coord_xy(3,j);
+				cout<<(char)178;
+			}
+			coord_xy(150,1);cout<<(char)178;
+			for(int j=1;j<34;j++){
+				coord_xy(150,j);
+				cout<<(char)178;
+			}
+			coord_xy(3,33);
+			for(int i=0;i<147;i++){
+				cout<<(char)178;
+			}
+			coord_xy(4,35);
+		}
+		void saathi_communication_frame(){
+			coord_xy(67,3);cout<<"|VIRTUAL SAATHI|";
+			coord_xy(67,4);cout<<"****************";
+			coord_xy(15,2);
+			for(int i=0;i<122;i++){
+				cout<<(char)178;
+			}
+			coord_xy(15,2);cout<<(char)178;
+			for(int j=2;j<10;j++){
+				coord_xy(15,j);
+				cout<<(char)178;
+			}
+			coord_xy(137,2);cout<<(char)178;
+			for(int j=2;j<11;j++){
+				coord_xy(137,j);
+				cout<<(char)178;
+			}
+			coord_xy(15,10);
+			for(int i=0;i<122;i++){
+				cout<<(char)178;
+			}
+			coord_xy(4,35);
+		}
+		void user_communication_frame(){
+			coord_xy(67,21);cout<<"|USER|";
+			coord_xy(67,22);cout<<"******";
+			coord_xy(15,20);
+			for(int i=0;i<122;i++){
+				cout<<(char)178;
+			}
+			coord_xy(15,20);cout<<(char)178;
+			for(int j=20;j<32;j++){
+				coord_xy(15,j);
+				cout<<(char)178;
+			}
+			coord_xy(137,20);cout<<(char)178;
+			for(int j=20;j<33;j++){
+				coord_xy(137,j);
+				cout<<(char)178;
+			}
+			coord_xy(15,32);
+			for(int i=0;i<122;i++){
+				cout<<(char)178;
+			}
+			coord_xy(4,35);
+		}
+		
+	
+		
+};
+
+class User_Speech;
+class Saathi_Speech:public Boundary_Frame{
+	char saathi_voice[100];
+	public:
+		void speech_start();
+		void conversation_start();
+		int random_number_generator();
+		void conversation_state_updater();
+		void conversation_state_finder(Word_value W_temp, string user_voice_str);
+		void question_response(string user_voice_str);
+		void task_response(string user_voice_str);
+		void statement_response(string user_voice_str);
+		void greeting_response(string user_voice_str);
+		friend User_Speech;
+		
+};
+
+
+class User_Speech:public Boundary_Frame{
+	Saathi_Speech S1;
+	public:
+		
+		Saathi_Speech Saathi_temp;
+		void user_voice_input();
+		
+};
+
+void User_Speech::user_voice_input(){
+			coord_xy(30,25);
+			coord_xy(30,25);cout<<"                                                                      ";
+			coord_xy(30,25);
+			gets(user_voice);
+		//	Saathi_Speech temp_for_user;
+			string user_voice_str{user_voice};
+			transform(user_voice_str.begin(), user_voice_str.end(), user_voice_str.begin(), ::tolower);
+			Word_value W_temp{0};
+		//	cout<<user_voice_str;
+		//	cout<<W_temp.Question<<" "<<W_temp.Task<<" "<<W_temp.Greeting<<" "<<W_temp.Statement;
+			array<string, 10> question{"what ", "where ", "whose ","how ","why ","when ","wher ","whos ","who ","whom "};
+			auto iteration1 = find_if(begin(question), end(question),[&](const string& our_string)
+                       {return user_voice_str.find(our_string) != string::npos; });
+           // cout<<iteration1<<" "<<end(question);
+            if (iteration1 != end(question))
+				{
+    				W_temp.Question += 7;
+				//	cout<<"dahel";
+				}
+			array<string, 5> task{"do ", "make ", "please ","will ","would "};
+			auto iteration2 = find_if(begin(task), end(task),[&](const string& our_string)
+                       {return user_voice_str.find(our_string) != string::npos; });
+            if (iteration2 != end(task))
+				{
+    				W_temp.Task += 6;
+				//	cout<<"ok";
+				}
+			
+			array<string, 19> greeting{"hello ","greetings ","greeting ", "namaste ", "hi ","hey ","morning ","night ","yo ","helo ","afternoon ","evening ","namste ",
+			"namashte ","mornin ","nite ","nightt ","evenin ","afternon "};
+			auto iteration3 = find_if(begin(greeting), end(greeting),[&](const string& our_string)
+                       {return user_voice_str.find(our_string) != string::npos; });
+            if (iteration3 != end(greeting))
+				{
+    				W_temp.Greeting += 4;
+					//cout<<"nice";
+				}
+			if((W_temp.Question&&W_temp.Task&&W_temp.Greeting)==0)
+				{
+					W_temp.Statement++;
+				//	cout<<"cool";	
+				}
+			
+//			if((user_voice_str.find("what")) != string::npos){
+//				W_temp.Question++;
+//				cout<<"dahel";
+//				
+//			}
+//			else if((user_voice_str.find("(make)|(do)")) != string::npos){
+//				W_temp.Task++;
+//				cout<<"yes";
+//				
+//			}
+//			else if((user_voice_str.find("hello"||"namaste")) != string::npos){
+//				W_temp.Greeting++;
+//				
+//			}
+//			else
+//			{
+//				W_temp.Statement++;
+//				
+//			}
+		
+		//	cout<<W_temp.Question<<" "<<W_temp.Task<<" "<<W_temp.Greeting<<" "<<W_temp.Statement;
+			S1.conversation_state_finder(W_temp,user_voice_str);
+			
+	}
+	
+void Saathi_Speech::conversation_state_finder(Word_value temp_value,string user_voice_str){
+		
+		if(temp_value.Question==7){
+		//	cout<<temp_value.Statement<<endl;
+			cout<<"this is question\n";
+			
+		}
+		else if(temp_value.Task==6){
+		//	cout<<temp_value.Statement<<endl;
+			cout<<"this is task\n";
+			task_response(user_voice_str);
+			
+		}
+		else if(temp_value.Greeting==4){
+		//	cout<<temp_value.Statement<<endl;
+			cout<<"this is greetings\n";
+		//	cout<<user_voice_str<<endl;
+			greeting_response(user_voice_str);
+			
+		}
+		else if(temp_value.Statement==1){
+			
+			cout<<"this is statement\n";
+		}
+		else{
+			return;
+		}
+		
+		
+		
+	}
+
+void Saathi_Speech::question_response(string user_voice_str){
+	
+	
+}
+
+void Saathi_Speech::task_response(string user_voice_str){
+			array<string, 7> task{"open ","make ","play ","search ","searc ","searh ","display "};
+			auto iteration_task = find_if(begin(task), end(task),[&](const string& our_task_string)
+                       {return user_voice_str.find(our_task_string) != string::npos; });
+           
+            if (iteration_task != end(task))
+				{
+					int no_value_flag[5]{0};
+    				array<string, 3> task1{"word ", "msword ","mirosoftword "};
+					auto sub_iteration_task_1 = find_if(begin(task1), end(task1),[&](const string& our_subtask_string)
+                       {return user_voice_str.find(our_subtask_string) != string::npos; });
+           
+            		if (sub_iteration_task_1 != end(task1))
+					{
+						system("@echo off");
+						system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" Sure saathee \"");
+						coord_xy(30,6);cout<<"                                                                      ";
+						coord_xy(30,6);
+						cout<<"Sure, Saathi"<<endl;
+						no_value_flag[0]++;
+    					system("start swriter");
+				
+					}
+				
+					array<string, 3> task2{"calc ", "calculator ","calcultor "};
+					auto sub_iteration_task_2 = find_if(begin(task2), end(task2),[&](const string& our_subtask_string)
+                       {return user_voice_str.find(our_subtask_string) != string::npos; });
+           
+            		if (sub_iteration_task_2 != end(task2))
+					{
+						system("@echo off");
+						system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" Ok Saathee \"");
+						coord_xy(30,6);cout<<"                                                                      ";
+						coord_xy(30,6);
+						cout<<"Ok, Saathi"<<endl;
+						no_value_flag[1]++;
+    					system("start calc");
+				
+					}
+					array<string, 3> task3{"youtube ", "ytube ","tube "};
+					auto sub_iteration_task_3 = find_if(begin(task3), end(task3),[&](const string& our_subtask_string)
+                       {return user_voice_str.find(our_subtask_string) != string::npos; });
+           
+            		if (sub_iteration_task_3 != end(task3))
+					{	
+						system("@echo off");
+						system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" No Problem, Saathee \"");
+						coord_xy(30,6);cout<<"                                                                      ";
+						coord_xy(30,6);
+						cout<<"No Problem, Saathi"<<endl;
+						no_value_flag[2]++;
+    					system("start www.youtube.com");
+				
+					}
+					array<string, 8> task4{"browser ", "google.com ","google ","edge ","web ","chrome ","mozilla ","firefox "};
+					auto sub_iteration_task_4 = find_if(begin(task4), end(task4),[&](const string& our_subtask_string)
+                       {return user_voice_str.find(our_subtask_string) != string::npos; });
+           
+            		if (sub_iteration_task_4 != end(task4))
+					{
+						system("@echo off");
+						system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" Ok cha Saathee \"");
+						coord_xy(30,6);cout<<"                                                                      ";
+						coord_xy(30,6);
+						cout<<"Ok cha, Saathi"<<endl;
+						no_value_flag[3]++;
+    					system("start www.google.com");
+				
+					}
+					array<string, 6> task5{"music ", "song ","songs","mp3 ","audio ","musi "};
+					auto sub_iteration_task_5 = find_if(begin(task5), end(task5),[&](const string& our_subtask_string)
+                       {return user_voice_str.find(our_subtask_string) != string::npos; });
+           
+            		if (sub_iteration_task_5 != end(task5))
+					{
+						system("@echo off");
+						system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" On It, Saathee \"");
+						coord_xy(30,6);cout<<"                                                                      ";
+						coord_xy(30,6);
+						cout<<"On it, Saathi"<<endl;
+						no_value_flag[4]++;
+						system("cd .. && cd .. && start music && cd music && start vlc \"Bipul Chettri - Syndicate (Single).mp3\"");
+    	
+					}
+					if((no_value_flag[0] + no_value_flag[1] + no_value_flag[2] + no_value_flag[3] + no_value_flag[4])==0){
+						char command[100]; 
+						coord_xy(30,6);cout<<"                                                                      ";
+						coord_xy(30,6);
+						strcpy(command,"espeak -a 150 -p 85 -s 130 -ven-us+f5 \" ");
+						strcat(command,"Maybe you could find it in the Internet! Good luck");
+						strcat(command," \"");
+	
+						system("@echo off");
+						sleep(1);
+						cout<<"Maybe you could find it in the Internet! Good luck";
+						system(command);
+						system("start www.google.com");	
+					}
+				}
+//			array<string, 7> task{"open","make","play","search","searc","searh","display"};
+//			auto iteration_task = find_if(begin(task), end(task),[&](const string& our_task_string)
+//                       {return user_voice_str.find(our_task_string) != string::npos; });
+//           
+//            if (iteration_task != end(task))
+				
+	
+}
+
+void Saathi_Speech::statement_response(string user_voice_str){
+	
+	
+}
+
+void Saathi_Speech::greeting_response(string user_voice_str){
+	array<string, 3> certain_words_set1{"namaste ", "namste ","numaste "};
+		auto greetings_iteration_task_1 = find_if(begin(certain_words_set1), end(certain_words_set1),[&](const string& our_subtask_string)
+            {return user_voice_str.find(our_subtask_string) != string::npos; });
+           
+        if (greetings_iteration_task_1 != end(certain_words_set1))
+			{	coord_xy(30,6);cout<<"                                                                      ";
+				coord_xy(30,6);
+				system("@echo off");
+				system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" Naa mas teh Saathee \"");
+				cout<<"Namaste Saathi";
+				return;
+			}
+	array<string, 3> certain_words_set2{"morning ", "mrning ","mornin "};
+		auto greetings_iteration_task_2 = find_if(begin(certain_words_set2), end(certain_words_set2),[&](const string& our_subtask_string)
+            {return user_voice_str.find(our_subtask_string) != string::npos; });
+           
+        if (greetings_iteration_task_2 != end(certain_words_set2))
+			{	coord_xy(30,6);cout<<"                                                                      ";
+				coord_xy(30,6);
+				system("@echo off");
+				system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" Good Morning Saathee\"");
+				cout<<"Good Morning, Saathi";
+				return;
+			}
+	
+	array<string, 3> certain_words_set3{"afternoon ", "aftrnoon ","afternon "};
+		auto greetings_iteration_task_3 = find_if(begin(certain_words_set3), end(certain_words_set3),[&](const string& our_subtask_string)
+            {return user_voice_str.find(our_subtask_string) != string::npos; });
+           
+        if (greetings_iteration_task_3 != end(certain_words_set3))
+			{	coord_xy(30,6);cout<<"                                                                      ";
+				coord_xy(30,6);
+				system("@echo off");
+				system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" Good Afternoon Saathee\"");
+				cout<<"Good Afternoon, Saathi";
+				return;
+			}
+		
+	array<string, 4> certain_words_set4{"evening ", "evenin ","evning ","evning "};
+		auto greetings_iteration_task_4 = find_if(begin(certain_words_set4), end(certain_words_set4),[&](const string& our_subtask_string)
+            {return user_voice_str.find(our_subtask_string) != string::npos; });
+           
+        if (greetings_iteration_task_4 != end(certain_words_set4))
+			{	coord_xy(30,6);cout<<"                                                                      ";
+				coord_xy(30,6);
+				system("@echo off");
+				system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" Good Evening Saathee\"");
+				cout<<"Good Evening, Saathi";
+				return;
+			}
+			
+	array<string, 4> certain_words_set5{"night ", "nite ","nigh ","niight "};
+		auto greetings_iteration_task_5 = find_if(begin(certain_words_set5), end(certain_words_set5),[&](const string& our_subtask_string)
+            {return user_voice_str.find(our_subtask_string) != string::npos; });
+           
+        if (greetings_iteration_task_5 != end(certain_words_set5))
+			{	coord_xy(30,6);cout<<"                                                                      ";
+				coord_xy(30,6);
+				system("@echo off");
+				system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" Good Night Saathee, Don't let the bed bugs bite, Haa haa \"");
+				cout<<"Good Night Saathi, Don't let the bed bugs bite, Hahaa ";
+				return;
+			}
+	speech_start();
+	
+}
+
+void Saathi_Speech::speech_start(){
+			conversation_start();
+			conversation_state_updater();
+			char command[100]; 
+			coord_xy(30,6);cout<<"                                                                      ";
+			coord_xy(30,6);
+			strcpy(command,"espeak -a 150 -p 85 -s 130 -ven-us+f5 \" ");
+			strcat(command,saathi_voice);
+			strcat(command," \"");
+		//	cout<<cmd<<endl;
+			system("@echo off");
+			sleep(1);
+			cout<<saathi_voice;
+			system(command);
+			coord_xy(30,25);cout<<"                                                                      ";
+		}
+
+void Saathi_Speech::conversation_start(){
+	ifstream info;
+//	cout<<"This is inside conversation\n";
+//	cout<<saathi_voice<<endl;
+	Speech Sp_Saathi;
+	info.open("Greetings_Initialization.bin",ios::in|ios::binary);
+	int Greeting_value = random_number_generator();
+	if(info.is_open()){
+	while(!info.eof()){
+		info.read((char*)&Sp_Saathi,sizeof(Sp_Saathi));
+		if(Greeting_value==Sp_Saathi.number_mark){
+			strcpy(saathi_voice,Sp_Saathi.user_speech_copy);
+			}
+		}
+	}
+	else
+	//	cout<<"Couldnot open\n";
+	info.close();
+	
+	
+}
+
+void Saathi_Speech::conversation_state_updater(){
+	//cout<<"Inside state updater\n";getchar();
+	ifstream state_update_read;
+	Speech Sp01;int number_marker{0};
+	Sp01.number_mark=0;
+	state_update_read.open("Greetings_Initialization.bin",ios::in|ios::binary);
+	if(state_update_read.is_open()){
+	while(!state_update_read.eof()){
+		state_update_read.read((char*)&Sp01,sizeof(Sp01));
+		number_marker=Sp01.number_mark;
+		
+		}
+	}
+	state_update_read.close();
+	ofstream state_update_write;
+	Sp01.number_mark = number_marker;
+	state_update_write.open("Greetings_Initialization.bin",ios::app|ios::binary);
+	Sp01.number_mark++;
+//	cout<<user_voice;
+	strcpy(Sp01.user_speech_copy,user_voice);
+	//cout<<Sp01.number_mark<<" "<<Sp01.user_speech_copy;
+	state_update_write.write((char*)&Sp01,sizeof(Sp01));
+	state_update_write.close();
+	//cout<<"appended\n";
+	getchar();
+	
+	
+}
+
+int Saathi_Speech::random_number_generator(){
+	srand(time(0));
+	int random_value{0};
+	ifstream state_update_read;
+	Speech Sp01;int number_marker{0};
+	Sp01.number_mark=0;
+	state_update_read.open("Greetings_Initialization.bin",ios::in|ios::binary);
+	if(state_update_read.is_open()){
+	while(!state_update_read.eof()){
+		state_update_read.read((char*)&Sp01,sizeof(Sp01));
+		number_marker=Sp01.number_mark;
+		
+		}
+	}
+	else{
+		//cout<<"could not generate random number\n";
+		return 0;
+	}
+	state_update_read.close();
+    random_value = rand()%number_marker;
+	return random_value;
+}
+
+
+int main() {
+	Boundary_Frame F1;
+	User_Speech U1;
+	F1.full_outer_frame();
+	F1.full_inner_frame();
+	F1.saathi_communication_frame();
+	F1.user_communication_frame();
+	
+	while(1){
+	U1.user_voice_input();
+	
+//	S1.speech_start();
+	}
+	F1.coord_xy(4,35);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	return 0;
+}
