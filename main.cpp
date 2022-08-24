@@ -2,7 +2,7 @@
    ##**************************   	 Mero Virtual Saathi       ************************************##
    ##							                                               ##
    ##				         PURBANCHAL UNIVERSITY                                         ##
-   ##												       ##		  					   ##
+   ##											    BIT Sem-II ##		  					   ##
    ## Submitted to:- Kantipur City College                      Prepared by:- John Subba, Rishi Khadka ##
    ###################################################################################################### */
 
