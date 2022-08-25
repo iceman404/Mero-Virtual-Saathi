@@ -1,12 +1,10 @@
-/* ######################################################################################################
-   ##**************************   	 Mero Virtual Saathi       ************************************##
-   ##							                                               ##
-   ##				         PURBANCHAL UNIVERSITY                                         ##
-   ##											    BIT Sem-II ##		  					   ##
-   ## Submitted to:- Kantipur City College                      Prepared by:- John Subba, Rishi Khadka ##
-   ###################################################################################################### */
-
-
+/*  ######################################################################################################
+    ##**************************   	     Mero Virtual Saathi        ************************************##
+    ##							                                                                        ##
+    ##				                     PURBANCHAL UNIVERSITY                                          ##
+    ##											                                             BIT Sem-II ##		  					  
+    ## Submitted to:- Kantipur City College                      Prepared by:- John Subba, Rishi Khadka ##
+    ######################################################################################################  */
 
 
 
@@ -17,9 +15,9 @@
 #include<time.h>
 #include<string.h>
 #include<string>
-#include<algorithm>
+#include<algorithm>  //for words iteration
 #include<array>
-#include<conio.h>
+#include<conio.h> //getch only
 
 using namespace std;
 
@@ -31,12 +29,14 @@ typedef struct speech_value{
 	char user_speech_copy[100];
 }Speech;
 	
+	
 typedef struct Word_Analyzer{
 	int Greeting;
 	int Question;
 	int Task;
 	int Statement;
 }Word_value;
+
 
 typedef struct country_details{
 	char country_name[20];
@@ -47,11 +47,13 @@ typedef struct country_details{
 	char literacy_rate[10];
 }country;
 
+//for coordinates global scope
 void coord_xy(short x, short y){
  		COORD pos ={x,y};
  		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
 
+//Intro page global scope
 void Intro_page(){
 	int i=0;
 	for(i=4;i<11;i++){
@@ -105,7 +107,8 @@ coord_xy(27,16);printf("  _\\_/_   |___|   |_|_\\  _|_|_   \\___/   |_|_|   |___
 							                                                    	
 }
 
-char saathi_login_prompt(){
+//secret code for database modification
+char saathi_secret_prompt(){
     char secret_code[20]="saathi_123", s_code[20],c;
     int y,i=0;
 
@@ -140,25 +143,52 @@ char saathi_login_prompt(){
        
 }
 
+// country database addition
 void new_info_to_database(country *c){
+	ifstream country_existing_info;
+	country local_temp;
+	string local_country_name,local_temp_1;
 	ofstream country_info;
+	country_existing_info.open("country_database.bin",ios_base::binary|ios_base::in);
+	coord_xy(30,6);cout<<"                                                                      ";coord_xy(30,6);
+	cout<<"Country Name: ";getline(cin,local_country_name);fflush(stdin);const char* country_name_temp = local_country_name.c_str();
+	strcpy(c->country_name,country_name_temp);
+	transform(local_country_name.begin(), local_country_name.end(), local_country_name.begin(), ::tolower);
+	country_existing_info.read((char *) &local_temp,sizeof(country));
+//	if(country_existing_info.open()){
+//		goto
+//	}
+	while(!country_existing_info.eof()){
+		local_temp_1 = local_temp.country_name; 
+		transform(local_temp_1.begin(), local_temp_1.end(), local_temp_1.begin(), ::tolower);
+		if(local_country_name == local_temp_1){
+			system("@echo off");
+			system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" I think this country is already in our database \"");
+			coord_xy(30,6);cout<<"                                                                      ";coord_xy(30,6);
+			cout<<"I think this country is already in our database";
+			country_existing_info.close();			
+			return;
+		}
+		country_existing_info.read((char *) &local_temp,sizeof(country));
+	}
+	country_existing_info.close();
 	country_info.open("country_database.bin",ios_base::binary|ios_base::app);
+	
 	coord_xy(30,6);cout<<"                                                                      ";coord_xy(30,6);
-	cout<<"Country Name: ";cin>>c->country_name;fflush(stdin);
+	cout<<c->country_name<<"'s Capital: ";gets(c->country_capital);fflush(stdin);
 	coord_xy(30,6);cout<<"                                                                      ";coord_xy(30,6);
-	cout<<c->country_name<<"'s Capital: ";cin>>c->country_capital;fflush(stdin);
+	cout<<c->country_name<<"'s Area: ";gets(c->total_area);fflush(stdin);
 	coord_xy(30,6);cout<<"                                                                      ";coord_xy(30,6);
-	cout<<c->country_name<<"'s Area: ";cin>>c->total_area;fflush(stdin);
+	cout<<c->country_name<<"'s Currency: ";gets(c->currency);fflush(stdin);
 	coord_xy(30,6);cout<<"                                                                      ";coord_xy(30,6);
-	cout<<c->country_name<<"'s Currency: ";cin>>c->currency;fflush(stdin);
+	cout<<c->country_name<<"'s Dominant Language: ";gets(c->dominant_language);fflush(stdin);
 	coord_xy(30,6);cout<<"                                                                      ";coord_xy(30,6);
-	cout<<c->country_name<<"'s Dominant Language: ";cin>>c->dominant_language;fflush(stdin);
-	coord_xy(30,6);cout<<"                                                                      ";coord_xy(30,6);
-	cout<<c->country_name<<"'s Literacy Rate: ";cin>>c->literacy_rate;fflush(stdin);
+	cout<<c->country_name<<"'s Literacy Rate: ";gets(c->literacy_rate);fflush(stdin);
 	country_info.write((char *) c,sizeof(country));
 	country_info.close();
 }
 
+// database modification
 void modify_info_to_database(){
 	ifstream country_existing_info;
 	ofstream country_new_info;
@@ -182,17 +212,17 @@ void modify_info_to_database(){
 			coord_xy(30,6);cout<<"                                                                      ";coord_xy(30,6);
 			cout<<"Enter new details now:";getchar();
 			coord_xy(30,6);cout<<"                                                                      ";coord_xy(30,6);
-			cout<<"Country Name: ";cin>>local_temp.country_name;fflush(stdin);
+			cout<<"Country Name: ";gets(local_temp.country_name);fflush(stdin);
 			coord_xy(30,6);cout<<"                                                                      ";coord_xy(30,6);
-			cout<<local_temp.country_name<<"'s Capital: ";cin>>local_temp.country_capital;fflush(stdin);
+			cout<<local_temp.country_name<<"'s Capital: ";gets(local_temp.country_capital);fflush(stdin);
 			coord_xy(30,6);cout<<"                                                                      ";coord_xy(30,6);
-			cout<<local_temp.country_name<<"'s Area: ";cin>>local_temp.total_area;fflush(stdin);
+			cout<<local_temp.country_name<<"'s Area: ";gets(local_temp.total_area);fflush(stdin);
 			coord_xy(30,6);cout<<"                                                                      ";coord_xy(30,6);
-			cout<<local_temp.country_name<<"'s Currency: ";cin>>local_temp.currency;fflush(stdin);
+			cout<<local_temp.country_name<<"'s Currency: ";gets(local_temp.currency);fflush(stdin);
 			coord_xy(30,6);cout<<"                                                                      ";coord_xy(30,6);
-			cout<<local_temp.country_name<<"'s Dominant Language: ";cin>>local_temp.dominant_language;fflush(stdin);
+			cout<<local_temp.country_name<<"'s Dominant Language: ";gets(local_temp.dominant_language);fflush(stdin);
 			coord_xy(30,6);cout<<"                                                                      ";coord_xy(30,6);
-			cout<<local_temp.country_name<<"'s Literacy Rate: ";cin>>local_temp.literacy_rate;fflush(stdin);
+			cout<<local_temp.country_name<<"'s Literacy Rate: ";gets(local_temp.literacy_rate);fflush(stdin);
 			country_new_info.write((char *) &local_temp,sizeof(country));
 			fflush(stdin);
 			//continue;								
@@ -208,14 +238,19 @@ void modify_info_to_database(){
 	remove("country_database.bin");
 	rename("country_database_new.bin","country_database.bin");
 	if(local_flag != 2){
+		system("@echo off");
+		system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" I think this country doesnot exists in our database \"");
 		coord_xy(30,6);cout<<"                                                                      ";coord_xy(30,6);
-		cout<<"I think this country doesnot exists in our database\n";
+		cout<<"I think this country doesnot exists in our database";
 	}
 	
 }
 
-char user_voice[100];	
-	
+
+char user_voice[100];	//uservoice capture at global scope
+
+
+// frame for the application visual appearance	
 class Boundary_Frame{
 	public:
 		void coord_xy(short x, short y){
@@ -314,14 +349,15 @@ class Boundary_Frame{
 		
 };
 
+//saathi class with its member functions
 class User_Speech;
 class Saathi_Speech:public Boundary_Frame{
 	char saathi_voice[100];
 	public:
-		void speech_start();
-		void conversation_start();
-		int random_number_generator();
-		void conversation_state_updater();
+		void speech_start(); //speech initialization
+		void conversation_start(); //conversation starter
+		int random_number_generator(); //random number genearator
+ 		void conversation_state_updater(); 
 		void conversation_state_finder(Word_value W_temp, string user_voice_str);
 		void question_response(string user_voice_str);
 		void task_response(string user_voice_str);
@@ -341,6 +377,7 @@ class User_Speech:public Boundary_Frame{
 		
 };
 
+//takes user speech voice input
 void User_Speech::user_voice_input(){
 			coord_xy(30,25);
 			coord_xy(30,25);cout<<"                                                                      ";
@@ -418,6 +455,7 @@ void User_Speech::user_voice_input(){
 			
 	}
 	
+//finds the nature of the sentence 	
 void Saathi_Speech::conversation_state_finder(Word_value temp_value,string user_voice_str){
 		
 		if(temp_value.Question==7){
@@ -450,12 +488,14 @@ void Saathi_Speech::conversation_state_finder(Word_value temp_value,string user_
 		
 		
 		
-	}
+}
 
+
+//function for question response
 void Saathi_Speech::question_response(string user_voice_str){
 	array<string, 3> q_task1{"what ","wat ","waht ",};
-			auto iteration_task_q1 = find_if(begin(q_task1), end(q_task1),[&](const string& our_task_string)
-                       {return user_voice_str.find(our_task_string) != string::npos; });
+	auto iteration_task_q1 = find_if(begin(q_task1), end(q_task1),[&](const string& our_task_string)
+        {return user_voice_str.find(our_task_string) != string::npos; });
            
             if (iteration_task_q1 != end(q_task1))
 				{
@@ -476,50 +516,50 @@ void Saathi_Speech::question_response(string user_voice_str){
 						return user_voice_str.find(our_subtask_string) != string::npos;
 						});
 						
-    				array<string, 3> task1{"kapital ","capital ","capitel ",};
-					auto sub_iteration_task_1 = find_if(begin(task1), end(task1),[&](const string& our_subtask_string)
-                    {if( user_voice_str.find(our_subtask_string) != string::npos){
-                       	word_finder[1] = "capital";
+    					array<string, 3> task1{"kapital ","capital ","capitel ",};
+						auto sub_iteration_task_1 = find_if(begin(task1), end(task1),[&](const string& our_subtask_string)
+                    	{if( user_voice_str.find(our_subtask_string) != string::npos){
+                       		word_finder[1] = "capital";
                        	}
 						return user_voice_str.find(our_subtask_string) != string::npos;
 						});
 						
-					array<string, 4> task2{"currency ","curency ","monetary ","money ",};
-					auto sub_iteration_task_2 = find_if(begin(task2), end(task2),[&](const string& our_subtask_string)
-                    {if( user_voice_str.find(our_subtask_string) != string::npos){
-                       	word_finder[2] = "currency";
+						array<string, 4> task2{"currency ","curency ","monetary ","money ",};
+						auto sub_iteration_task_2 = find_if(begin(task2), end(task2),[&](const string& our_subtask_string)
+                   		{if( user_voice_str.find(our_subtask_string) != string::npos){
+                      	 	word_finder[2] = "currency";
                        	}
 						return user_voice_str.find(our_subtask_string) != string::npos;
 						});
 						
-					array<string, 3> task3{"literacy ","education ","literate ",};
-					auto sub_iteration_task_3 = find_if(begin(task3), end(task3),[&](const string& our_subtask_string)
-                    {if( user_voice_str.find(our_subtask_string) != string::npos){
-                       	word_finder[3] = "literacy";
+						array<string, 3> task3{"literacy ","education ","literate ",};
+						auto sub_iteration_task_3 = find_if(begin(task3), end(task3),[&](const string& our_subtask_string)
+                   		 {if( user_voice_str.find(our_subtask_string) != string::npos){
+                       		word_finder[3] = "literacy";
                        	}
 						return user_voice_str.find(our_subtask_string) != string::npos;
 						});
 						
-					array<string, 4> task4{"area ","big ","landmass ","area covered ",};
-					auto sub_iteration_task_4 = find_if(begin(task4), end(task4),[&](const string& our_subtask_string)
-                    {if( user_voice_str.find(our_subtask_string) != string::npos){
-                       	word_finder[4] = "area";
+						array<string, 4> task4{"area ","big ","landmass ","area covered ",};
+						auto sub_iteration_task_4 = find_if(begin(task4), end(task4),[&](const string& our_subtask_string)
+                    	{if( user_voice_str.find(our_subtask_string) != string::npos){
+                       		word_finder[4] = "area";
                        	}
 						return user_voice_str.find(our_subtask_string) != string::npos;
 						});
 						
-					array<string, 4> task5{"dominant language ","language ","spoken ","dominant ",};
-					auto sub_iteration_task_5 = find_if(begin(task5), end(task5),[&](const string& our_subtask_string)
-                    {if( user_voice_str.find(our_subtask_string) != string::npos){
-                       	word_finder[5] = "language";
+						array<string, 4> task5{"dominant language ","language ","spoken ","dominant ",};
+						auto sub_iteration_task_5 = find_if(begin(task5), end(task5),[&](const string& our_subtask_string)
+                    	{if( user_voice_str.find(our_subtask_string) != string::npos){
+                       		word_finder[5] = "language";
                        	}
-						return user_voice_str.find(our_subtask_string) != string::npos;
+							return user_voice_str.find(our_subtask_string) != string::npos;
 						});
 						
            			//cout<<word_finder[0]<<" "<<word_finder[1]<<" "<<word_finder[2]<<" "<<endl;getchar();
-            		if ((sub_iteration_task_1 != end(task1)) || (sub_iteration_task_2 != end(task2)) || (sub_iteration_task_3 != end(task3))
-					 || (sub_iteration_task_4 != end(task4)) || (sub_iteration_task_5 != end(task5)) )
-					{
+            			if ((sub_iteration_task_1 != end(task1)) || (sub_iteration_task_2 != end(task2)) || (sub_iteration_task_3 != end(task3))
+					 	|| (sub_iteration_task_4 != end(task4)) || (sub_iteration_task_5 != end(task5)) )
+						{
 						ifstream reader;country s0;
 						int local_flag_l1{0};
 						reader.open("country_database.bin",ios::binary|ios::in);
@@ -535,17 +575,17 @@ void Saathi_Speech::question_response(string user_voice_str){
 								local_flag_l1 = 33;
 								break;								
 							}
-						}
-						reader.close();
-						if(local_flag_l1 != 33){
+							}
+							reader.close();
+							if(local_flag_l1 != 33){
 							system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" It seems this country doesnot exists in our Database \"");
 							coord_xy(30,6);cout<<"                                                                      ";
 							coord_xy(30,6);
-							cout<<"It seems this country doesnot exists in our Database\n"<<endl;
+							cout<<"It seems this country doesnot exists in our Database"<<endl;
 							return;
 							
-						}
-						if(word_finder[1]=="capital"){
+							}
+							if(word_finder[1]=="capital"){
 							string local_temp1 = "espeak -a 150 -p 85 -s 130 -ven-us+f5 \" Hey It's capital is: ";
 							local_temp1 += s0.country_capital;
 							local_temp1 += "\"";
@@ -557,8 +597,8 @@ void Saathi_Speech::question_response(string user_voice_str){
 							coord_xy(30,6);
 							cout<<"Hey It's capital is: "<<s0.country_capital<<endl;
 							
-						}
-						if(word_finder[2]=="currency"){
+							}
+							if(word_finder[2]=="currency"){
 							string local_temp1 = "espeak -a 150 -p 85 -s 130 -ven-us+f5 \" This country uses: ";
 							local_temp1 += s0.currency;
 							local_temp1 += "\"";
@@ -570,9 +610,9 @@ void Saathi_Speech::question_response(string user_voice_str){
 							coord_xy(30,6);
 							cout<<"This country uses: "<<s0.currency<<endl;
 							
-						}
+							}
 						
-						if(word_finder[3]=="literacy"){
+							if(word_finder[3]=="literacy"){
 							string local_temp1 = "espeak -a 150 -p 85 -s 130 -ven-us+f5 \" It's literacy rate is: ";
 							local_temp1 += s0.literacy_rate;
 							local_temp1 += "\"";
@@ -584,9 +624,9 @@ void Saathi_Speech::question_response(string user_voice_str){
 							coord_xy(30,6);
 							cout<<"It's literacy rate is: "<<s0.literacy_rate<<endl;
 							
-						}
+							}
 						
-						if(word_finder[4]=="area"){
+							if(word_finder[4]=="area"){
 							string local_temp1 = "espeak -a 150 -p 85 -s 130 -ven-us+f5 \" It covers a total area of: ";
 							local_temp1 += s0.total_area;
 							local_temp1 += "\"";
@@ -598,9 +638,9 @@ void Saathi_Speech::question_response(string user_voice_str){
 							coord_xy(30,6);
 							cout<<"It covers a total area of: "<<s0.total_area<<endl;
 							
-						}
+							}
 						
-						if(word_finder[5]=="language"){
+							if(word_finder[5]=="language"){
 							string local_temp1 = "espeak -a 150 -p 85 -s 130 -ven-us+f5 \" Majority here speak's: ";
 							local_temp1 += s0.dominant_language;
 							local_temp1 += "\"";
@@ -612,7 +652,7 @@ void Saathi_Speech::question_response(string user_voice_str){
 							coord_xy(30,6);
 							cout<<"Majority here speak's: "<<s0.dominant_language<<endl;
 							
-						}
+							}
 //						system("@echo off");
 //						system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" Hey I have displayed the results for you: \"");
 //						coord_xy(30,6);cout<<"                                                                      ";
@@ -620,14 +660,95 @@ void Saathi_Speech::question_response(string user_voice_str){
 //						cout<<"Sure, Saathi"<<endl;
 						//no_value_flag[0]++;
     				//	system("start swriter || start word");
-				
+						}
+						
+				array<string, 3> task_v1{"your ","you ","your's ",};
+				auto iteration_task_v1 = find_if(begin(task_v1), end(task_v1),[&](const string& our_task_string)
+        			{return user_voice_str.find(our_task_string) != string::npos; });
+        		if (iteration_task_v1 != end(task_v1))
+				{
+					array<string, 3> task_v1_1{"name ","identity ","identification ",};
+					auto iteration_task_v1_1 = find_if(begin(task_v1_1), end(task_v1_1),[&](const string& our_task_string)
+        				{return user_voice_str.find(our_task_string) != string::npos; });
+        			if (iteration_task_v1_1 != end(task_v1_1))
+					{
+						coord_xy(30,6);cout<<"                                                                      ";coord_xy(30,6);
+		
+						cout<<"I'm Saathi version 1.0, created by two students of BIT";coord_xy(30,7);cout<<" second sem, of Kantipur City College for their University Project."<<endl;
+						system("@echo off");
+						system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" I'm Saa thee version 1.0, created by two students of BIT second sem, of Kantipur City College for their University Project. \"");
+						coord_xy(30,7);cout<<"                                                                           ";
+						coord_xy(30,6);cout<<"                                                                      ";
+							
 					}
+					array<string, 3> task_v1_2{"motto ","purpose ","goal ",};
+					auto iteration_task_v1_2 = find_if(begin(task_v1_2), end(task_v1_2),[&](const string& our_task_string)
+        				{return user_voice_str.find(our_task_string) != string::npos; });
+        			if (iteration_task_v1_2 != end(task_v1_2))
+					{
+						coord_xy(30,6);cout<<"                                                                      ";coord_xy(30,6);
+						
+						cout<<"My purpose is to chat with you as well as to";coord_xy(30,7);cout<<" perform your command allowed by my capacity."<<endl;
+						system("@echo off");
+						system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" My purpose is to chat with you as well as to perform your command allowed by my capacity. \"");
+						coord_xy(30,7);cout<<"                                                                             ";
+						coord_xy(30,6);cout<<"                                                                      ";	
+					}
+//					array<string, 3> task_v1_1{"name ","identity ","identification ",};
+//					auto iteration_task_v1_1 = find_if(begin(task1_v1_1), end(task1_v1_1),[&](const string& our_task_string)
+//        				{return user_voice_str.find(our_task_string) != string::npos; });
+//        			if (iteration_task_v1_1 != end(task_v1_1))
+//					{
+//						system("@echo off");
+//						system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" I'm Saa thee version 1.0, created by two students of BIT second sem, of Kantipur City College for their University Project. \"");
+//						coord_xy(30,6);cout<<"                                                                      ";
+//						coord_xy(30,6);
+//						cout<<"I'm Saathi version 1.0, created by two students of BIT";coord_xy(30,7);cout<<" second sem, of Kantipur City College for their University Project."<<endl;
+//							
+//					}
+			
+			
+			
+				}
+			}
+			
+			//
+		array<string, 3> q_task2{"who ","whoo ","wwho ",};
+		auto iteration_task_q2 = find_if(begin(q_task2), end(q_task2),[&](const string& our_task_string)
+        	{return user_voice_str.find(our_task_string) != string::npos; });
+           
+            if (iteration_task_q2 != end(q_task2))
+				{
+					array<string, 3> task_q2_1{"yu ","you ","u ",};
+					auto iteration_task_q2_1 = find_if(begin(task_q2_1), end(task_q2_1),[&](const string& our_task_string)
+        				{return user_voice_str.find(our_task_string) != string::npos; });
+        			if (iteration_task_q2_1 != end(task_q2_1))
+					{
+						coord_xy(30,6);cout<<"                                                                      ";
+						coord_xy(30,6);
+						cout<<"I'm Saathi version 1.0, created by John and Rishi of KCC";
+						system("@echo off");
+						system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" I'm Saa thee version 1.0, created by John and Ree shee of K C C \"");
+						//coord_xy(30,7);//cout<<" second sem, of Kantipur City College for their University Project."<<endl;
+					}
+					else
+					{
+						coord_xy(30,6);cout<<"                                                                      ";
+						coord_xy(30,6);
+						cout<<"I dont know who that is... must be a stranger. Ha Ha Haaa";
+						system("@echo off");
+						system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" I dont know who that is... must be a stranger. Ha Ha Haaa \"");
+						//coord_xy(30,7);cout<<" second sem, of Kantipur City College for their University Project."<<endl;
+					}
+					
 				}
 	
 	
 	
 }
 
+
+//function for task response
 void Saathi_Speech::task_response(string user_voice_str){
 			array<string, 9> task{"open ","make ","play ","search ","searc ","searh ","display ","start ","run ",};
 			auto iteration_task = find_if(begin(task), end(task),[&](const string& our_task_string)
@@ -740,7 +861,7 @@ void Saathi_Speech::task_response(string user_voice_str){
 						system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" note pad is here, \"");
 						coord_xy(30,6);cout<<"                                                                      ";
 						coord_xy(30,6);
-						cout<<"Notepad is here\n"<<endl;
+						cout<<"Notepad is here"<<endl;
 						no_value_flag[6]++;
 						system("@echo off");
 						system("start notepad");
@@ -774,7 +895,7 @@ void Saathi_Speech::task_response(string user_voice_str){
 						system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" Voice recorder started, have a check on your beautiful voice \"");
 						coord_xy(30,6);cout<<"                                                                      ";
 						coord_xy(30,6);
-						cout<<"Voice recorder started, have a check on your beautiful voice \n"<<endl;
+						cout<<"Voice recorder started, have a check on your beautiful voice "<<endl;
 						no_value_flag[8]++;
 						system("@echo off");
 						system("explorer.exe shell:appsFolder\\Microsoft.WindowsSoundRecorder_8wekyb3d8bbwe!App");
@@ -809,87 +930,101 @@ void Saathi_Speech::task_response(string user_voice_str){
 						system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" See your later \"");
 						coord_xy(30,6);cout<<"                                                                      ";
 						coord_xy(30,6);
-						cout<<"See your later \n"<<endl;
+						cout<<"See your later "<<endl;
 						system("@echo off");
-						sleep(1);
+					//	sleep(1);
 						coord_xy(4,35);
 						exit(0);
 						
     	
 					}
 					
-			array<string, 4> n2_task{"create new gk ", "add ","new ","gk ",};
+			array<string, 3> n2_task{"create new ", "add ","new ",};
 					auto iteration_task_n2 = find_if(begin(n2_task), end(n2_task),[&](const string& our_subtask_string)
                        {return user_voice_str.find(our_subtask_string) != string::npos; });
            
             		if (iteration_task_n2 != end(n2_task))
 					{
-						system("@echo off");
-						system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" Tell me our secret code: \"");
-						coord_xy(30,6);cout<<"                                                                      ";coord_xy(30,6);
-						cout<<"Tell me our secret code: "<<endl;
-						char check;
-						check = saathi_login_prompt();
-						if(check=='1'){
+						array<string, 2> n2_task_temp_1{"country database ", "country details ",};
+						auto iteration_task_temp_1 = find_if(begin(n2_task_temp_1), end(n2_task_temp_1),[&](const string& our_subtask_string)
+                       		{return user_voice_str.find(our_subtask_string) != string::npos; });
+           
+            			if (iteration_task_temp_1 != end(n2_task_temp_1))
+						{
 							system("@echo off");
-							system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" Ok enter your details below:\n \"");
-							coord_xy(30,6);cout<<"                                                                      ";
-							coord_xy(30,6);
-							cout<<"Ok enter your details below: \n"<<endl;
-							system("@echo off");
-							country C1;
-							new_info_to_database(&C1);
-							sleep(1);
-							system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" I think we are all set\n \"");
-							coord_xy(30,6);cout<<"                                                                      ";
-							coord_xy(30,6);
-							cout<<"I think we are all set \n"<<endl;
-							coord_xy(4,35);
-							return;}
-						else{
-							system("@echo off");
-							system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" I'm Sorry, I cant't let you tamper the database \"");
-							coord_xy(30,6);cout<<"                                                                      ";
-							coord_xy(30,6);
-							cout<<"I'm Sorry, I cant't let you tamper the database"<<endl;
-							return;
-						}
+							system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" Tell me our secret code: \"");
+							coord_xy(30,6);cout<<"                                                                      ";coord_xy(30,6);
+							cout<<"Tell me our secret code: "<<endl;
+							char check;
+							check = saathi_secret_prompt();
+							if(check=='1'){
+								system("@echo off");
+								system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" Ok enter your details below: \"");
+								coord_xy(30,6);cout<<"                                                                      ";
+								coord_xy(30,6);
+								cout<<"Ok enter your details below:"<<endl;
+								system("@echo off");
+								country C1;
+								new_info_to_database(&C1);
+							//	sleep(1);
+								system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" I think That is all \"");
+								coord_xy(30,6);cout<<"                                                                      ";
+								coord_xy(30,6);
+								cout<<"I think That is all. "<<endl;
+								coord_xy(4,35);
+								return;}
+							else{
+								system("@echo off");
+								system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" I'm Sorry, I cant't let you tamper the database \"");
+								coord_xy(30,6);cout<<"                                                                      ";
+								coord_xy(30,6);
+								cout<<"I'm Sorry, I cant't let you tamper the database"<<endl;
+								return;
+							}
 						
+						}
 					}
-			array<string, 4> n3_task{"update ", "change ","static gk ","modify ",};
+			array<string, 3> n3_task{"update ", "change ","modify ",};
 					auto iteration_task_n3 = find_if(begin(n3_task), end(n3_task),[&](const string& our_subtask_string)
                        {return user_voice_str.find(our_subtask_string) != string::npos; });
            
             		if (iteration_task_n3 != end(n3_task))
 					{
-						system("@echo off");
-						system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \"Ok, Tell me our secret code: \"");
-						coord_xy(30,6);cout<<"                                                                      ";coord_xy(30,6);
-						cout<<"Ok, Tell me our secret code: "<<endl;
-						char check;
-						check = saathi_login_prompt();
-						if(check=='1'){
+						array<string, 2> n2_task_temp_2{"country database ", "country details ",};
+						auto iteration_task_temp_2 = find_if(begin(n2_task_temp_2), end(n2_task_temp_2),[&](const string& our_subtask_string)
+                       		{return user_voice_str.find(our_subtask_string) != string::npos; });
+           
+            			if (iteration_task_temp_2 != end(n2_task_temp_2))
+						{
 							system("@echo off");
-							system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" Ok go modify it. \"");
-							coord_xy(30,6);cout<<"                                                                      ";
-							coord_xy(30,6);
-							cout<<"Ok go modify it \n"<<endl;
-							system("@echo off");
-							modify_info_to_database();
-							sleep(1);
-							system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" I think it's updated for good! \"");
-							coord_xy(30,6);cout<<"                                                                      ";
-							coord_xy(30,6);
-							cout<<"I think it's updated for good!"<<endl;
-							coord_xy(4,35);
-							return;}
-						else{
-							system("@echo off");
-							system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" I'm Sorry, I cant't let you modify the database \"");
-							coord_xy(30,6);cout<<"                                                                      ";
-							coord_xy(30,6);
-							cout<<"I'm Sorry, I cant't let you modify the database"<<endl;
-							return;
+							system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \"Ok, Tell me our secret code: \"");
+							coord_xy(30,6);cout<<"                                                                      ";coord_xy(30,6);
+							cout<<"Ok, Tell me our secret code: "<<endl;
+							char check;
+							check = saathi_secret_prompt();
+							if(check=='1'){
+								system("@echo off");
+								system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" Ok go modify it. \"");
+								coord_xy(30,6);cout<<"                                                                      ";
+								coord_xy(30,6);
+								cout<<"Ok go modify it \n"<<endl;
+								system("@echo off");
+								modify_info_to_database();
+							//sleep(1);
+								system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" And that is all! \"");
+								coord_xy(30,6);cout<<"                                                                      ";
+								coord_xy(30,6);
+								cout<<"And that is all!"<<endl;
+								coord_xy(4,35);
+								return;}
+							else{
+								system("@echo off");
+								system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" I'm Sorry, I cant't let you modify the database \"");
+								coord_xy(30,6);cout<<"                                                                      ";
+								coord_xy(30,6);
+								cout<<"I'm Sorry, I cant't let you modify the database"<<endl;
+								return;
+							}
 						}
 //						system("@echo off");
 //						system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" Ok go modify it \"");
@@ -903,6 +1038,52 @@ void Saathi_Speech::task_response(string user_voice_str){
 						
     	
 					}
+					
+			array<string, 3> n4_task{"tell ", "say ","throw ",};
+					auto iteration_task_n4 = find_if(begin(n4_task), end(n4_task),[&](const string& our_subtask_string)
+                       {return user_voice_str.find(our_subtask_string) != string::npos; });
+           
+            		if (iteration_task_n4 != end(n4_task))
+					{
+						array<string, 3> n2_task_temp_1{"joke ", "funny ","jokes ",};
+						auto iteration_task_temp_1 = find_if(begin(n2_task_temp_1), end(n2_task_temp_1),[&](const string& our_subtask_string)
+                       	{return user_voice_str.find(our_subtask_string) != string::npos; });
+           
+            			if (iteration_task_temp_1 != end(n2_task_temp_1))
+						{
+							int local_random_value{0};
+							string temp_for_espeak;
+							string good_response[5]={"Ok, I was flying solo to the moon Haah","Once upon a time... there was a funny man hahahaa ","One two three jokes are free ahahaaa","I love to eat pastaa but I'm physically incapable...","a joke.... hahaha"};
+	       					local_random_value=[](){return rand()%5;}();
+		       				temp_for_espeak = "espeak -a 150 -p 85 -s 130 -ven-us+f5 \"";
+		       				temp_for_espeak += good_response[local_random_value];
+		       				temp_for_espeak += "\"";
+		       				const char* command_1 = temp_for_espeak.c_str();
+		       				coord_xy(30,6);cout<<"                                                                      ";coord_xy(30,6);
+							cout<<good_response[local_random_value]<<endl;
+		       				system("@echo off");
+							system(command_1);
+						}
+						array<string, 3> n2_task_temp_2{"story ", "tale ","stories ",};
+						auto iteration_task_temp_2 = find_if(begin(n2_task_temp_2), end(n2_task_temp_2),[&](const string& our_subtask_string)
+                       	{return user_voice_str.find(our_subtask_string) != string::npos; });
+                       	
+           				if (iteration_task_temp_2 != end(n2_task_temp_2))
+						{
+							int local_random_value{0};
+							string temp_for_espeak;
+							string good_response[5]={"In a country, there was a country...","Stories are only for kids...are you a kid? ","I love to tell you but I dont have one hehehe","I saw a cat fighting a dog today but it was a dream. ","Stories are 10 storey buildings."};
+	       					local_random_value=[](){return rand()%5;}();
+		       				temp_for_espeak = "espeak -a 150 -p 85 -s 130 -ven-us+f5 \"";
+		       				temp_for_espeak += good_response[local_random_value];
+		       				temp_for_espeak += "\"";
+		       				const char* command_1 = temp_for_espeak.c_str();
+		       				coord_xy(30,6);cout<<"                                                                      ";coord_xy(30,6);
+							cout<<good_response[local_random_value]<<endl;
+		       				system("@echo off");
+							system(command_1);
+						}
+					}
 //			array<string, 7> task{"open","make","play","search","searc","searh","display"};
 //			auto iteration_task = find_if(begin(task), end(task),[&](const string& our_task_string)
 //                       {return user_voice_str.find(our_task_string) != string::npos; });
@@ -912,6 +1093,7 @@ void Saathi_Speech::task_response(string user_voice_str){
 	
 }
 
+//function for statement response
 void Saathi_Speech::statement_response(string user_voice_str){
 	int sensible_value{0},non_sensible_value{0};
 	array<string, 6> words_set_1{"eat ", "drink ","taste ","had ","drank ","ate ",};
@@ -919,60 +1101,69 @@ void Saathi_Speech::statement_response(string user_voice_str){
             {return user_voice_str.find(word_subtask_string) != string::npos; });
            
         if (word_iteration_task_1 != end(words_set_1))
-			{	coord_xy(30,6);cout<<"                                                                      ";
-				coord_xy(30,6);
-				srand((unsigned)time(NULL));
-				string response,temp_for_espeak;
-				int local_random_value{0};
-				string ask_phrase[5]={"Was, it good\n","Ok, How did it taste\n","Was it tasty?\n","Did you enjoy it?\n","You want more of it? Haha\n"};
-				local_random_value = [](){return rand()%5;}();
-				temp_for_espeak = "espeak -a 150 -p 85 -s 130 -ven-us+f5 \"";
-       			temp_for_espeak += ask_phrase[local_random_value];
-       			temp_for_espeak += "\"";
-       			const char* command_1 = temp_for_espeak.c_str();
-       			system("@echo off");
-				system(command_1);
-				coord_xy(30,6);cout<<"                                                                      ";coord_xy(30,6);
-				cout<<ask_phrase[local_random_value]<<endl;
-				coord_xy(30,25);cout<<"                                                                      ";
-				coord_xy(30,25);cin>>response;
-				transform(response.begin(), response.end(), response.begin(), ::tolower);
-				response += " ";
-				array<string, 7> temp_words_set_1{"yeah ", "yes ","good ","best ","tasty ","sweet ","lovely ",};
-				auto word_iteration_task_1 = find_if(begin(temp_words_set_1), end(temp_words_set_1),[&](const string& word_subtask_string)
-            	{return response.find(word_subtask_string) != string::npos; });
-       			if (word_iteration_task_1 != end(temp_words_set_1)){
-       				string good_response[5]={"Ok, great you are happy\n","Nice\n","Enjoy your stuff\n","That's the spirit, my friend\n","Cheers! Haha\n"};
-       				local_random_value=[](){return rand()%5;}();
-       				temp_for_espeak = "espeak -a 150 -p 85 -s 130 -ven-us+f5 \"";
-       				temp_for_espeak += good_response[local_random_value];
-       				temp_for_espeak += "\"";
-       				const char* command_1 = temp_for_espeak.c_str();
-       				system("@echo off");
+			{
+				array<string, 15> words_set_1_l1{"coffee ", "tea ","chocolate ","biscuit ","rice ","food ","sweets ","dinner ","lunch ","breakfast ",
+				"momo ","juice ","drinks ","noodles, ","meal ",};
+				auto word_iteration_task_1_l1 = find_if(begin(words_set_1_l1), end(words_set_1_l1),[&](const string& word_subtask_string)
+            		{return user_voice_str.find(word_subtask_string) != string::npos; });
+           
+        		if (word_iteration_task_1_l1 != end(words_set_1_l1))
+				{	
+					coord_xy(30,6);cout<<"                                                                      ";
+					coord_xy(30,6);
+					srand((unsigned)time(NULL));
+					string response,temp_for_espeak;
+					int local_random_value{0};
+					string ask_phrase[5]={"Was, it good","Ok, How did it taste","Was it tasty?","Did you enjoy it?","You want more of it? Haha"};
+					local_random_value = [](){return rand()%5;}();
+					temp_for_espeak = "espeak -a 150 -p 85 -s 130 -ven-us+f5 \"";
+	       			temp_for_espeak += ask_phrase[local_random_value];
+	       			temp_for_espeak += "\"";
+	       			const char* command_1 = temp_for_espeak.c_str();
+	       			system("@echo off");
 					system(command_1);
 					coord_xy(30,6);cout<<"                                                                      ";coord_xy(30,6);
-					cout<<good_response[local_random_value]<<endl;
-					return;
-			  	 }
+					cout<<ask_phrase[local_random_value]<<endl;
+					coord_xy(30,25);cout<<"                                                                      ";
+					coord_xy(30,25);cin>>response;
+					transform(response.begin(), response.end(), response.begin(), ::tolower);
+					response += " ";
+					array<string, 7> temp_words_set_1{"yeah ", "yes ","good ","best ","tasty ","sweet ","lovely ",};
+					auto word_iteration_task_1 = find_if(begin(temp_words_set_1), end(temp_words_set_1),[&](const string& word_subtask_string)
+            		{return response.find(word_subtask_string) != string::npos; });
+       				if (word_iteration_task_1 != end(temp_words_set_1)){
+       					string good_response[5]={"Ok, great you are happy","Nice","Enjoy your stuff","That's the spirit, my friend","Cheers! Haha"};
+       					local_random_value=[](){return rand()%5;}();
+	       				temp_for_espeak = "espeak -a 150 -p 85 -s 130 -ven-us+f5 \"";
+	       				temp_for_espeak += good_response[local_random_value];
+	       				temp_for_espeak += "\"";
+	       				const char* command_1 = temp_for_espeak.c_str();
+	       				system("@echo off");
+						system(command_1);
+						coord_xy(30,6);cout<<"                                                                      ";coord_xy(30,6);
+						cout<<good_response[local_random_value]<<endl;
+						return;
+			  	 	}
 			  	 
-			  	array<string, 7> temp_words_set_2{"naah ", "no ","not ","horrible ","bad ","disastrous ","nah",};
-				auto word_iteration_task_2 = find_if(begin(temp_words_set_2), end(temp_words_set_2),[&](const string& word_subtask_string)
-            	{return response.find(word_subtask_string) != string::npos; });
-            	if (word_iteration_task_2 != end(temp_words_set_2)){
-       				string bad_response[5]={"Awww, that was bad luck\n","Nevermind, you will have next time\n","It's Ok\n","Dont worry my friend\n","Yeah sometimes it happens! Haha\n"};
+			  		array<string, 7> temp_words_set_2{"naah ", "no ","not ","horrible ","bad ","disastrous ","nah",};
+					auto word_iteration_task_2 = find_if(begin(temp_words_set_2), end(temp_words_set_2),[&](const string& word_subtask_string)
+            			{return response.find(word_subtask_string) != string::npos; });
+            		if (word_iteration_task_2 != end(temp_words_set_2)){
+       					string bad_response[5]={"Awww, that was bad luck","Nevermind, you will have next time","It's Ok","Dont worry my friend","Yeah sometimes it happens! Haha"};
        			//	srand((unsigned)time(NULL));
-       				local_random_value=[](){return rand()%5;}();
-       				temp_for_espeak = "espeak -a 150 -p 85 -s 130 -ven-us+f5 \"";
-       				temp_for_espeak += bad_response[local_random_value];
-       				temp_for_espeak += "\"";
-       				const char* command_1 = temp_for_espeak.c_str();
-       				system("@echo off");
-					system(command_1);
-					coord_xy(30,6);cout<<"                                                                      ";coord_xy(30,6);
-					cout<<bad_response[local_random_value]<<endl;
-					return;
-			  	 }
+       					local_random_value=[](){return rand()%5;}();
+       					temp_for_espeak = "espeak -a 150 -p 85 -s 130 -ven-us+f5 \"";
+       					temp_for_espeak += bad_response[local_random_value];
+       					temp_for_espeak += "\"";
+       					const char* command_1 = temp_for_espeak.c_str();
+       					system("@echo off");
+						system(command_1);
+						coord_xy(30,6);cout<<"                                                                      ";coord_xy(30,6);
+						cout<<bad_response[local_random_value]<<endl;
+						return;
+			  	 	}
 				
+				}
 			}
 			
 		array<string, 3> words_set_2{"travel ", "travelling ","flying ",};
@@ -985,7 +1176,7 @@ void Saathi_Speech::statement_response(string user_voice_str){
 				srand((unsigned)time(NULL));
 				string response,temp_for_espeak;
 				int local_random_value{0};
-				string ask_phrase[5]={"Have a Safe journey\n","Ok, Have fun\n","See you soon\n","Ok, have a great time\n","You always loved it, Haha\n"};
+				string ask_phrase[5]={"Have a Safe journey","Ok, Have fun","See you soon","Ok, have a great time","You always loved it, Haha"};
 				local_random_value = [](){return rand()%5;}();
 				temp_for_espeak = "espeak -a 150 -p 85 -s 130 -ven-us+f5 \"";
        			temp_for_espeak += ask_phrase[local_random_value];
@@ -1046,7 +1237,7 @@ void Saathi_Speech::statement_response(string user_voice_str){
 				srand((unsigned)time(NULL));
 				string response,temp_for_espeak;
 				int local_random_value{0};
-				string ask_phrase[5]={"We could play someday together\n","You are a chill person, Haha\n","That's one way to enjoy life\n","Great! now you must be very happy\n","Haha, I wish the same\n"};
+				string ask_phrase[5]={"We could play someday together","You are a chill person, Haha","That's one way to enjoy life","Great! now you must be very happy","Haha, I wish the same"};
 				local_random_value = [](){return rand()%5;}();
 				temp_for_espeak = "espeak -a 150 -p 85 -s 130 -ven-us+f5 \"";
        			temp_for_espeak += ask_phrase[local_random_value];
@@ -1107,7 +1298,7 @@ void Saathi_Speech::statement_response(string user_voice_str){
 				srand((unsigned)time(NULL));
 				string response,temp_for_espeak;
 				int local_random_value{0};
-				string ask_phrase[5]={"Alright,\n","Hmmm...\n","Ahhmmm?\n","Okay\n","I see\n"};
+				string ask_phrase[5]={"Alright,","Hmmm...","Ahhmmm?","Okay","I see"};
 				local_random_value = [](){return rand()%5;}();
 				temp_for_espeak = "espeak -a 150 -p 85 -s 130 -ven-us+f5 \"";
        			temp_for_espeak += ask_phrase[local_random_value];
@@ -1168,7 +1359,7 @@ void Saathi_Speech::statement_response(string user_voice_str){
 				srand((unsigned)time(NULL));
 				string response,temp_for_espeak;
 				int local_random_value{0};
-				string ask_phrase[5]={"See you soon,\n","Ba byee \n","Bye Bye, Saathee \n","Ok See yaa...\n","Bye....\n"};
+				string ask_phrase[5]={"See you soon..","Ba byee ","Bye Bye, Saathee ","Ok See yaa...","Bye...."};
 				local_random_value = [](){return rand()%5;}();
 				temp_for_espeak = "espeak -a 150 -p 85 -s 130 -ven-us+f5 \"";
        			temp_for_espeak += ask_phrase[local_random_value];
@@ -1187,6 +1378,7 @@ void Saathi_Speech::statement_response(string user_voice_str){
 	
 }
 
+//function for greeting response
 void Saathi_Speech::greeting_response(string user_voice_str){
 	array<string, 3> certain_words_set1{"namaste ", "namste ","numaste "};
 		auto greetings_iteration_task_1 = find_if(begin(certain_words_set1), end(certain_words_set1),[&](const string& our_subtask_string)
@@ -1260,9 +1452,9 @@ void Saathi_Speech::greeting_response(string user_voice_str){
 				coord_xy(30,6);
 				system("@echo off");
 				system("espeak -a 150 -p 85 -s 130 -ven-us+f5 \" Good bye my friend,  \"");
-				cout<<"Good Bye, my friend\n";
+				cout<<"Good Bye, my friend";
 				coord_xy(4,35);
-				sleep(1);
+				//sleep(1);
 				exit(0);
 				return;
 			}
@@ -1270,6 +1462,7 @@ void Saathi_Speech::greeting_response(string user_voice_str){
 	
 }
 
+//function for speech start
 void Saathi_Speech::speech_start(){
 			conversation_start();
 			conversation_state_updater();
@@ -1285,8 +1478,9 @@ void Saathi_Speech::speech_start(){
 			cout<<saathi_voice;
 			system(command);
 			coord_xy(30,25);cout<<"                                                                      ";
-		}
+}
 
+//function for conversation start
 void Saathi_Speech::conversation_start(){
 	ifstream info;
 //	cout<<"This is inside conversation\n";
@@ -1309,6 +1503,7 @@ void Saathi_Speech::conversation_start(){
 	
 }
 
+//updates conversation state
 void Saathi_Speech::conversation_state_updater(){
 	//cout<<"Inside state updater\n";getchar();
 	ifstream state_update_read;
@@ -1333,11 +1528,12 @@ void Saathi_Speech::conversation_state_updater(){
 	state_update_write.write((char*)&Sp01,sizeof(Sp01));
 	state_update_write.close();
 	//cout<<"appended\n";
-	getchar();
+	//getchar();
 	
 	
 }
 
+//random number generator based on values inside file
 int Saathi_Speech::random_number_generator(){
 	srand(time(0));
 	int random_value{0};
@@ -1361,6 +1557,7 @@ int Saathi_Speech::random_number_generator(){
 	return random_value;
 }
 
+//main program for the application
 
 int main(){
 	Boundary_Frame F1;
@@ -1375,29 +1572,21 @@ int main(){
 	F1.user_communication_frame();
 	
 	while(1){
+//	system("cls");
+//	F1.full_outer_frame();
+//	F1.full_inner_frame();
+//	F1.saathi_communication_frame();
+//	F1.user_communication_frame();
 	U1.user_voice_input();
 	
 //	S1.speech_start();
 	}
 	F1.coord_xy(4,35);
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	return 0;
 }
+
+//end of the main program
+
+
 
