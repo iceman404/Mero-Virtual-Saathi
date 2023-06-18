@@ -1,6 +1,6 @@
 # Second Sem Project:
 
-# Mero-Virtual-Saathi
+# Title: Mero-Virtual-Saathi
 
 
 Put all the files contained in this repository to the folder before running the program.
