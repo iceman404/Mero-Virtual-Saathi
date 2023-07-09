@@ -1309,7 +1309,7 @@ void Saathi_Speech::statement_response(string user_voice_str){
 				coord_xy(30,6);cout<<"                                                                      ";coord_xy(30,6);
 				cout<<ask_phrase[local_random_value]<<endl;
 				coord_xy(30,25);cout<<"                                                                      ";
-//				coord_xy(30,25);cin>>response;
+/*				coord_xy(30,25);cin>>response;
 //				transform(response.begin(), response.end(), response.begin(), ::tolower);
 //				response += " ";
 //				array<string, 7> temp_words_set_1{"yeah ", "yes ","good ","best ","tasty ","sweet ","lovely ",};
@@ -1345,7 +1345,7 @@ void Saathi_Speech::statement_response(string user_voice_str){
 //					coord_xy(30,6);cout<<"                                                                      ";coord_xy(30,6);
 //					cout<<bad_response[local_random_value]<<endl;
 //					return;
-//			  	 }
+//			  	 } */
 				
 			}
 			
@@ -1572,11 +1572,11 @@ int main(){
 	F1.user_communication_frame();
 	
 	while(1){
-//	system("cls");
+/*	system("cls");
 //	F1.full_outer_frame();
 //	F1.full_inner_frame();
 //	F1.saathi_communication_frame();
-//	F1.user_communication_frame();
+//	F1.user_communication_frame(); */
 	U1.user_voice_input();
 	
 //	S1.speech_start();
