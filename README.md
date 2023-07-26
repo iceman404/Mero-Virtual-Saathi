@@ -10,4 +10,4 @@ Program compiled successfully with c++17 standards.
 
 Additional changes will soon arrive.
 
-### This project is also being refactored at the moment.
+### This project is being refactored at the moment.
