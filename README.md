@@ -1,54 +1,54 @@
-# Second Sem Project:
+## Second Sem Project:
 [![-Documentation](https://img.shields.io/badge/Documentation-Files-blue)](https://github.com/iceman404/Mero-Virtual-Saathi/tree/main/Documentation)
 
-**Project Title:**  
-# Application Name: Mero-Virtual-Saathi
-Development of a Console-Based C++ Chatbot
+*Project Title:*  
+## Application Name: `Mero-Virtual-Saathi`
+Development of a Console-Based C++ Chatbot with basic OS capabilities
 
-**Project Objectives:**
+**`Project Objectives:`**
 
 1. Create a console-based chatbot in C++.
 2. Simulate a virtual assistant with OS control capabilities.
 3. Implement natural language understanding for dynamic responses.
 4. Integrate the eSpeak library for text-to-speech functionality.
 
-**Key Features and Functionalities:**
+**`Key Features and Functionalities:`**
 
-1. **Natural Language Understanding (NLU):**
+1. **`Natural Language Understanding (NLU):`**
    - Interpret user input by analyzing semantic meaning.
    - Dynamic response generation based on user context.
 
-2. **Basic OS Control:**
+2. **`Basic OS Control:`**
    - Perform OS operations, such as file manipulation and process control.
    
-3. **Text-to-Speech Integration (eSpeak):**
+3. **`Text-to-Speech Integration (eSpeak):`**
    - Enhance user interaction with spoken responses.
    
-4. **Modular Structure:**
+4. **`Modular Structure:`**
    - Organize code into modular components for maintainability and extensibility(WIP).
 
-6. **User Customization:**
+6. **`User Customization:`**
    - Allow users to customize chatbot behavior and responses.
    
-7. **Data Persistence:**
+7. **`Data Persistence:`**
    - Store conversational data and user preferences for context-aware interactions to some extent.
 
 
-**Expected Outcomes:**
+**`Expected Outcomes:`**
 
 1. Console-based virtual assistant and chatbot system.
 2. Demonstration of natural language processing and OS control capabilities.
 3. Text-to-speech synthesis for immersive user experience.
 
-**Significance:**
+**`Significance:`**
 
 This project showcases the practical application of C++ in developing an intelligent chatbot with real-world utility, encompassing natural language understanding, customizable behavior, and interaction enhancement through text-to-speech synthesis. It addresses the growing relevance of chatbot technology in various domains, serving both educational and practical purposes.
 
 
 
-
+---
 Program compiled successfully with c++17 standards.
 
 Additional changes will soon arrive.
 
-### This project is being refactored at the moment.
+#### This project is being refactored at the moment.
