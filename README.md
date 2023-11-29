@@ -6,11 +6,13 @@
 Development of a Console-Based C++ Chatbot with basic OS capabilities
 
 **`Project Objectives:`**
-<pre> 
-   1. Create a console-based chatbot in C++.
-   2. Simulate a virtual assistant with OS control capabilities.
-   3. Implement natural language understanding for dynamic responses.
-   4. Integrate the eSpeak library for text-to-speech functionality.
+<pre>
+   <ul>
+   <li>Create a console-based chatbot in C++.</li>
+   <li>Simulate a virtual assistant with OS control capabilities.</li>
+   <li>Implement natural language understanding for dynamic responses.</li>
+   <li>Integrate the eSpeak library for text-to-speech functionality.</li>
+   </ul>
 </pre>
 **`Key Features and Functionalities:`**
 
@@ -50,7 +52,7 @@ This project showcases the practical application of C++ in developing an intelli
 Program compiled successfully with c++17 standards.
 <pre>
    
-  -Additional changes will arrive soon...
+  Additional changes will arrive soon...
    
 </pre>
 
