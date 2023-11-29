@@ -14,6 +14,7 @@ Development of a Console-Based C++ Chatbot with basic OS capabilities
    <li>Integrate the eSpeak library for text-to-speech functionality.</li>
    </ul>
 </pre>
+
 **`Key Features and Functionalities:`**
 
 1. **`Natural Language Understanding (NLU):`**
