@@ -1,8 +1,7 @@
 ## Second Sem Project:
 [![-Documentation](https://img.shields.io/badge/Documentation-Files-blue)](https://github.com/iceman404/Mero-Virtual-Saathi/tree/main/Documentation)
 
-*Project Title:*  
-## Application Name: `Mero-Virtual-Saathi`
+## Project Title: `Mero-Virtual-Saathi`
 Development of a Console-Based C++ Chatbot with basic OS capabilities
 
 **`Project Objectives:`**
