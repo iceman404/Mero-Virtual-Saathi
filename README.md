@@ -48,7 +48,11 @@ This project showcases the practical application of C++ in developing an intelli
 
 ---
 Program compiled successfully with c++17 standards.
+<pre>
+   
+  -Additional changes will arrive soon...
+   
+</pre>
 
-Additional changes will soon arrive.
-
+---
 #### This project is being refactored at the moment.
