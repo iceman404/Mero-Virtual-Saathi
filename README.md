@@ -6,7 +6,7 @@
 Development of a Console-Based C++ Chatbot with basic OS capabilities
 
 **`Project Objectives:`**
-<pre style="backgorund-color: #005c66;">
+<pre style="background-color: #005c66;">
    <ul>
    <li>Create a console-based chatbot in C++.</li>
    <li>Simulate a virtual assistant with OS control capabilities.</li>
