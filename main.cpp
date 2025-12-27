@@ -1,11 +1,13 @@
 /*  ##########################################################################################################
-    ##**************************   	     Mero Virtual Saathi        ************************************##
-    ##							                                                    ##
-    ##				                     PURBANCHAL UNIVERSITY                                  ##
-    ##											   BIT Sem-II       ##		  					  
-    ## Submitted to:- Kantipur City College                      Prepared by:- John Subba, Rishi Khadka     ##
-    ##########################################################################################################  */
+    ##**************************   	     Mero Virtual Saathi        	************************************##
+    ##							                                                    						##
+    ##				                     PURBANCHAL UNIVERSITY                                  			##
+    ##											   BIT Sem-II       										##
+    ## Submitted to:- Kantipur City College                      	Prepared by:- John Subba, Rishi Khadka  ##
+    ##########################################################################################################
+*/
 
+//This was the original source code that was used for practice and for project submission. Initially it was made to run as windows console app.
 
 
 #include<iostream>
@@ -15,9 +17,9 @@
 #include<time.h>
 #include<string.h>
 #include<string>
-#include<algorithm>  //for words iteration
+#include<algorithm>  	//for words iteration
 #include<array>
-#include<conio.h> //getch only
+#include<conio.h> 		//getch only
 
 using namespace std;
 
@@ -84,6 +86,7 @@ void Intro_page(){
 		coord_xy(85+i,10);printf("%c",178);usleep(100);
 		
 	}
+
 //	coord_xy(27,13);printf("| | | | || | \\    ____   ____       _      __  __ ");usleep(100000);
 //	coord_xy(27,14);printf("| | | | || |  ]]   / _ \\   / ___| |  _ \\     / \\    |  \\/  |");usleep(100000);
 //	coord_xy(27,15);printf("| |_| | || |__))| | | | | |  _  | |_) |   / _ \\   | |\\/| |");usleep(100000);

@@ -1,0 +1,81 @@
+# Build directories
+build/
+cmake-build-*/
+out/
+bin/
+lib/
+Release/
+Debug/
+MinSizeRel/
+RelWithDebInfo/
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+!CMakeLists.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps/
+
+# Compiled files
+*.o
+*.obj
+*.exe
+*.out
+*.a
+*.lib
+*.so
+*.dylib
+*.dll
+*.pdb
+*.ilk
+*.exp
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.code-workspace
+*.sublime-project
+*.sublime-workspace
+
+# Editor backup files
+*~
+*.bak
+*.backup
+*.orig
+
+# Temporary files
+*.tmp
+*.log
+*.cache
+*.pid
+*.lock
+
+# Data files (keep structure but ignore content if needed)
+# Uncomment if you don't want to track data files
+# data/*.bin
+
+# Test coverage
+coverage/
+*.gcda
+*.gcno
+*.gcov
+
+# Documentation builds
+docs/_build/
+site/
+
+# Package files
+*.tar.gz
+*.zip
+*.deb
+*.rpm
+*.pkg.tar.xz
+
