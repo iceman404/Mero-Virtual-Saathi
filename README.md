@@ -7,7 +7,7 @@
 [![Platform](https://img.shields.io/badge/Platform-Cross--Platform-lightgrey.svg)]()
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-## 📋 Table of Contents
+##  Table of Contents
 
 - [About](#about)
 - [Features](#features)
